@@ -103,7 +103,7 @@ abstract class AbstractParser
         foreach ($this->rows as $key => $row) {
             foreach ($rules_to_parse as $_func_name) {
                 if (!in_array($_func_name, $rules)) {
-                    $result = isset($row[$_func_name])? isset($row[$_func_name]) : null;
+                    $result = isset($row[$_func_name])? $row[$_func_name] : null;
                 } else {
                     $result = call_user_func($this->parseRules()[$_func_name], $row);
                 }
