@@ -2,6 +2,7 @@
     "name": "xuchen/parser",
     "description": "rows-parser",
     "type": "php",
+    "license": "Apache",
     "authors": [
         {
             "name": "zhouxuchen",
