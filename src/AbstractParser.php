@@ -88,17 +88,25 @@ abstract class AbstractParser
         $parse_mode     = $this->parse_mode;
         $return_mode    = $this->return_mode;
 
+        $rules = array_keys($this->parseRules());
+        // ONLY - MODE
         if ($parse_mode == self::PARSE_MODE_ONLY) {
-            $rules_to_parse = array_intersect(array_keys($this->parseRules()), $keys);
+            $rules_to_parse = $keys;
+        // EXCEPT - MODE
         } else if ($parse_mode == self::PARSE_MODE_EXCEPT) {
             $rules_to_parse = array_diff(array_keys($this->parseRules()), $keys);
+        // ALL - MODE
         } else {
-            $rules_to_parse = array_keys($this->parseRules());
+            $rules_to_parse = $rules;
         }
 
         foreach ($this->rows as $key => $row) {
             foreach ($rules_to_parse as $_func_name) {
-                $result = call_user_func($this->parseRules()[$_func_name], $row);
+                if (!in_array($_func_name, $rules)) {
+                    $result = isset($row[$_func_name])? isset($row[$_func_name]) : null;
+                } else {
+                    $result = call_user_func($this->parseRules()[$_func_name], $row);
+                }
                 $this->rows[$key][$_func_name] = $result;
             }
 
