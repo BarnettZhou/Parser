@@ -121,13 +121,23 @@ abstract class AbstractParser
         return $this->rows;
     }
 
-    final public function parseRows()
+    /**
+     * 整理数据
+     * @param string $method
+     * @return array
+     */
+    final public function parseRows($method = 'parseSingleRow')
     {
         $this->beforeParseRows();
-        return array_map([$this, 'parseSingleRow'], $this->rows);
+        if (!method_exists($this, $method)) {
+            return $this->rows;
+        } else {
+            return array_map([$this, $method], $this->rows);
+        }
     }
 
     /**
+     * 整理数居前的回调
      * @return mixed
      */
     protected function beforeParseRows()
