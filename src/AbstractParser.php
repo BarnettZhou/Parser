@@ -173,4 +173,30 @@ abstract class AbstractParser
         }
         return $value;
     }
+
+    /**
+     * 递归地获取hash-table中的值
+     * @param $row
+     * @param string $key
+     * @param null $default
+     * @param string $trans
+     * @return null
+     */
+    function getValueRecursively($row, $key, $default = null, $trans = '')
+    {
+        $key_arr = explode('.', $key);
+        if (count($key_arr) > 1) {
+            $parent_key = $key_arr[0];
+            unset($key_arr[0]);
+            $child_key = implode('.', $key_arr);
+
+            if (isset($row[$parent_key])) {
+                return $this->getValueRecursively($row[$parent_key], $child_key, $default, $trans);
+            } else {
+                return $default;
+            }
+        } else {
+            return $this->getValue($row, $key, $default, $trans);
+        }
+    }
 }
