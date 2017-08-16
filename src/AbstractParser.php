@@ -155,13 +155,6 @@ abstract class AbstractParser
      */
     protected function getValue($row, $key, $default = null, $trans = '')
     {
-        // key处理
-        $key_array = explode('.', $key);
-        if (count($key_array) > 1 && isset($row[$key_array[0]])) {
-            $row = $row[$key_array[0]];
-            $key = $key_array[1];
-        }
-
         if (isset($row[$key])) {
             $value = $row[$key];
         } else {
