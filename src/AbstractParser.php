@@ -187,10 +187,9 @@ abstract class AbstractParser
         $key_arr = explode('.', $key);
         if (count($key_arr) > 1) {
             $parent_key = $key_arr[0];
-            unset($key_arr[0]);
-            $child_key = implode('.', $key_arr);
-
             if (isset($row[$parent_key])) {
+                unset($key_arr[0]);
+                $child_key = implode('.', $key_arr);
                 return $this->getValueRecursively($row[$parent_key], $child_key, $default, $trans);
             } else {
                 return $default;
