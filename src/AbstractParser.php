@@ -55,6 +55,15 @@ abstract class AbstractParser
         return $this;
     }
 
+    /**
+     * 返回rows
+     * @return array
+     */
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
     public function setParseMode($mode)
     {
         if (in_array($mode, [0, 1, 2])) {
