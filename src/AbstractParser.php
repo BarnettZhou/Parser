@@ -64,7 +64,7 @@ abstract class AbstractParser
         return $this->rows;
     }
 
-    public function setParseMode($mode)
+    final public function setParseMode($mode)
     {
         if (in_array($mode, [0, 1, 2])) {
             $this->parse_mode = $mode;
@@ -77,7 +77,7 @@ abstract class AbstractParser
      * @param $mode
      * @return $this
      */
-    public function setReturnMode($mode)
+    final public function setReturnMode($mode)
     {
         if (in_array($mode, [0, 1])) {
             $this->return_mode = $mode;
@@ -90,7 +90,7 @@ abstract class AbstractParser
      * @param array $keys
      * @return array
      */
-    public function parseWithRules($keys = [])
+    final public function parseWithRules($keys = [])
     {
         $this->beforeParseRows();
 
@@ -162,7 +162,7 @@ abstract class AbstractParser
      * @param string $trans
      * @return null
      */
-    protected function getValue($row, $key, $default = null, $trans = '')
+    final protected function getValue($row, $key, $default = null, $trans = '')
     {
         if (isset($row[$key])) {
             $value = $row[$key];
@@ -184,7 +184,7 @@ abstract class AbstractParser
      * @param string $trans
      * @return null
      */
-    function getValueRecursively($row, $key, $default = null, $trans = '')
+    final protected function getValueRecursively($row, $key, $default = null, $trans = '')
     {
         $key_arr = explode('.', $key);
         if (count($key_arr) > 1) {
