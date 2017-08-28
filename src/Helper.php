@@ -12,8 +12,9 @@ trait Helper
 {
     protected $helper;
 
-    public function __construct()
+    public function __construct($rows)
     {
+        parent::__construct($rows);
         $this->helper = new ParserHelper();
     }
 }
