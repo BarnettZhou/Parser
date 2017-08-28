@@ -45,4 +45,21 @@ class ParserHelper
             return '*' . $name_right;
         }
     }
+
+    /**
+     * 隐藏QQ号
+     * @param $qq
+     * @return string
+     */
+    public function hideQq($qq)
+    {
+        $qq_len = strlen($qq);
+        $qq_left = substr($qq, 0, 3);
+        if ($qq_len < 6) {
+            return str_pad($qq_left, $qq_len, '*');
+        } else {
+            $qq_right = substr($qq, 7, $qq_len - 3);
+            return $qq_left . '****' . $qq_right;
+        }
+    }
 }
