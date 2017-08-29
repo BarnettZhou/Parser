@@ -114,7 +114,7 @@ class MyParser extends Parser
                 $mobile = $this->getValueRecursively($row, 'profile.mobile', '');
                 if ($mobile) {
                     // hideMobile()是Helper中提供的一个隐藏手机号的方法
-                    return $this->hideMobile($mobile);
+                    return $this->helper->hideMobile($mobile);
                 } else {
                     return $mobile;
                 }
