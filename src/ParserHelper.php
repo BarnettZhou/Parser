@@ -62,4 +62,22 @@ class ParserHelper
             return $qq_left . '****' . $qq_right;
         }
     }
+
+    /**
+     * 隐藏Email
+     * @param $email
+     * @return null|string
+     */
+    public function hideEmail($email)
+    {
+        $email_array = explode('@', $email);
+        if (count($email_array) <= 1) {
+            return null;
+        }
+
+        $left = $this->hideQq($email_array[0]);
+        $right = $email_array[1];
+
+        return $left . '@' . $right;
+    }
 }
