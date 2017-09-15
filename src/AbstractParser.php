@@ -67,7 +67,8 @@ abstract class AbstractParser
      */
     public function setRows($rows)
     {
-        $this->rows = $rows;
+        $this->rows     = $rows;
+        $this->row_mode = self::ROW_MODE_MANY;
         return $this;
     }
 
