@@ -20,7 +20,17 @@ abstract class AbstractParser
 
     protected $parse_mode = self::PARSE_MODE_ONLY;
 
+    /**
+     * 返回模式，默认返回参数列表中的数据
+     * @var int
+     */
     protected $return_mode = self::RETURN_MODE_WITH_KEYS;
+
+    /**
+     * 数据模式，默认为多行模式
+     * @var int
+     */
+    protected $row_mode = self::ROW_MODE_MANY;
 
     /**
      * 所有数据
@@ -45,6 +55,12 @@ abstract class AbstractParser
     const RETURN_MODE_WITH_KEYS = 1;
 
     /**
+     * 数据形式，单行数据或多行数据
+     */
+    const ROW_MODE_SINGLE   = 0;
+    const ROW_MODE_MANY     = 1;
+
+    /**
      * 设置rows
      * @param $rows
      * @return $this
@@ -64,6 +80,34 @@ abstract class AbstractParser
         return $this->rows;
     }
 
+    /**
+     * 设置单行数据
+     * @param $row
+     */
+    public function setSingleRow($row)
+    {
+        $this->row_mode = self::ROW_MODE_SINGLE;
+        $this->rows     = [$row];
+    }
+
+    /**
+     * 返回单行数据
+     * @return array
+     */
+    public function getSingleRow()
+    {
+        if (isset($this->rows[0]) && is_array($this->rows[0])) {
+            return $this->rows[0];
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * 设置整理模式
+     * @param $mode
+     * @return $this
+     */
     final public function setParseMode($mode)
     {
         if (in_array($mode, [0, 1, 2])) {
@@ -78,6 +122,19 @@ abstract class AbstractParser
      * @return $this
      */
     final public function setReturnMode($mode)
+    {
+        if (in_array($mode, [0, 1])) {
+            $this->return_mode = $mode;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置数据模式
+     * @param $mode
+     * @return $this
+     */
+    final public function setRowMode($mode)
     {
         if (in_array($mode, [0, 1])) {
             $this->return_mode = $mode;
@@ -127,7 +184,11 @@ abstract class AbstractParser
             }
         }
 
-        return $this->rows;
+        if ($this->row_mode == self::ROW_MODE_SINGLE && isset($this->rows[0])) {
+            return $this->rows[0];
+        } else {
+            return $this->rows;
+        }
     }
 
     /**
@@ -141,7 +202,12 @@ abstract class AbstractParser
         if (!method_exists($this, $method)) {
             return $this->rows;
         } else {
-            return array_map([$this, $method], $this->rows);
+            $this->rows = array_map([$this, $method], $this->rows);
+            if ($this->row_mode == self::ROW_MODE_SINGLE && isset($this->rows[0])) {
+                return $this->rows[0];
+            } else {
+                return $this->rows;
+            }
         }
     }
 
