@@ -83,11 +83,13 @@ abstract class AbstractParser
     /**
      * 设置单行数据
      * @param $row
+     * @return $this
      */
     public function setSingleRow($row)
     {
         $this->row_mode = self::ROW_MODE_SINGLE;
         $this->rows     = [$row];
+        return $this;
     }
 
     /**
