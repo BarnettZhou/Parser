@@ -39,6 +39,11 @@ abstract class AbstractParser
     protected $rows = [];
 
     /**
+     * @var array 原数据中的字段
+     */
+    protected $original_keys = [];
+
+    /**
      * 字段检查模式
      * PARSE_MODE_ALL       : 所有字段都被整理
      * PARSE_MODE_ONLY      : 只整理指定的字段
@@ -146,6 +151,23 @@ abstract class AbstractParser
     }
 
     /**
+     * 返回的数据集中带上原数据
+     * @param array $except
+     * @return $this
+     */
+    final public function withOriginalAttributes($except = [])
+    {
+        if (count($this->rows) > 0) {
+            $row = $this->rows[0];
+        } else {
+            return $this;
+        }
+
+        $this->original_keys = array_diff(array_keys($row), $except);
+        return $this;
+    }
+
+    /**
      * 根据给出的整理规则整理数据
      * @param array $keys
      * @return array
@@ -160,13 +182,13 @@ abstract class AbstractParser
         $rules = array_keys($this->parseRules());
         // ONLY - MODE
         if ($parse_mode == self::PARSE_MODE_ONLY) {
-            $rules_to_parse = $keys;
+            $rules_to_parse = array_merge($keys, $this->original_keys);
         // EXCEPT - MODE
         } else if ($parse_mode == self::PARSE_MODE_EXCEPT) {
-            $rules_to_parse = array_diff(array_keys($this->parseRules()), $keys);
+            $rules_to_parse = array_diff(array_merge($keys, $this->original_keys), $keys);
         // ALL - MODE
         } else {
-            $rules_to_parse = $rules;
+            $rules_to_parse = array_merge($rules, $this->original_keys);
         }
 
         foreach ($this->rows as $key => $row) {
