@@ -185,7 +185,7 @@ abstract class AbstractParser
             $rules_to_parse = array_merge($keys, $this->original_keys);
         // EXCEPT - MODE
         } else if ($parse_mode == self::PARSE_MODE_EXCEPT) {
-            $rules_to_parse = array_diff(array_merge($keys, $this->original_keys), $keys);
+            $rules_to_parse = array_diff(array_merge($rules, $this->original_keys), $keys);
         // ALL - MODE
         } else {
             $rules_to_parse = array_merge($rules, $this->original_keys);
